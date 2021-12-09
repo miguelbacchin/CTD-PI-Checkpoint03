@@ -29,3 +29,20 @@ module.exports = {
     },
 
 };
+
+faltas: function(nome){
+    for(i =0; i < this.alunos.length; i++){
+        if (this.alunos[i].nome == nome){
+            this.alunos[i].faltas++
+        }
+        return this.alunos[i].faltas
+    }     
+}
+
+let curso = {
+    nomeDoCurso: 'DH Club',
+    notaDeAprovacao: 8,
+    faltasMaximas: 2,
+    estudantes: alunos.alunos
+}
+
