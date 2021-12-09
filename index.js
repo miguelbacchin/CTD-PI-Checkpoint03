@@ -46,3 +46,20 @@ let curso = {
     estudantes: alunos.alunos
 }
 
+
+ehAprovado: function(nome){
+    for(i=0; i<this.estudantes.length; i++){
+        if(this.estudantes[i].nome == nome){
+            if(this.estudantes[i].faltas == this.faltasMaximas && alunos.calcularMedia(nome) >= this.notaDeAprovacao*1.1){
+                return `O estudante ${nome} está aprovado`
+            }
+            else if(this.estudantes[i].faltas < this.faltasMaximas && alunos.calcularMedia(nome) >= this.notaDeAprovacao){
+                return `O O estudante ${nome} está aprovado`
+            }
+            else{
+                return `O O estudante ${nome} está reprovado`
+            }
+        }
+    }
+}
+
