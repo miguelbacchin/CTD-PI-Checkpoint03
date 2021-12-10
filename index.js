@@ -1,65 +1,69 @@
-function Aluno(nome, faltas, notas) {
-    this.nome = nome,
-    this.faltas = faltas,
-    this.notas = notas
-};
+//1º Crie um objeto aluno que tenha
+function Aluno(nomeParam, qtFaltasParam, notasParam) {
+    this.nome = nomeParam
+    this.qtFaltas = qtFaltasParam
+    this.notas = notasParam
 
-let Felipe = new Aluno('Felipe', 4, [6,6,9]);
-let Joana = new Aluno('Joana', 2, [3,4,5]);
-let Mariana = new Aluno('Mariana', 1, [3,4,9]);
-let Marlene = new Aluno('Marlene', 5, [3,4,7]);
-let Jorge = new Aluno('Jorge', 0, [6,4,5]);
-
-module.exports = {
-    alunos:[Felipe, Joana, Mariana, Marlene, Jorge],
-    novoAluno: function(nome, faltas, notas){
-        const aluno = new Aluno(nome, faltas, notas);
-        return aluno
-    },
-    calcularMedia: function(nome){
-        let soma = 0;
-        for(i =0; i < this.alunos.length; i++){
-            if (this.alunos[i].nome == nome){
-                for(nota of this.alunos[i].notas){
-                    soma+=nota
-                }
-                return soma/this.alunos[i].notas.length
-            }
+    //2º Criar metodos "calcular media" e "faltas"
+    this.calcularMedia = function () {
+        let media = 0
+        for (let i = 0; i < this.notas.length; i++) {
+            media += this.notas[i]
         }
-    },
-
-};
-
-faltas: function(nome){
-    for(i =0; i < this.alunos.length; i++){
-        if (this.alunos[i].nome == nome){
-            this.alunos[i].faltas++
-        }
-        return this.alunos[i].faltas
-    }     
-}
-
-let curso = {
-    nomeDoCurso: 'DH Club',
-    notaDeAprovacao: 8,
-    faltasMaximas: 2,
-    estudantes: alunos.alunos
-}
-
-
-ehAprovado: function(nome){
-    for(i=0; i<this.estudantes.length; i++){
-        if(this.estudantes[i].nome == nome){
-            if(this.estudantes[i].faltas == this.faltasMaximas && alunos.calcularMedia(nome) >= this.notaDeAprovacao*1.1){
-                return `O estudante ${nome} está aprovado`
-            }
-            else if(this.estudantes[i].faltas < this.faltasMaximas && alunos.calcularMedia(nome) >= this.notaDeAprovacao){
-                return `O O estudante ${nome} está aprovado`
-            }
-            else{
-                return `O O estudante ${nome} está reprovado`
-            }
-        }
+        return media / this.notas.length
+    }
+    this.faltas = function () {
+        return this.qtFaltas + 1
     }
 }
+const aluno1 = new Aluno("Miguel", 7, [8, 8, 8, 8])
+const aluno2 = new Aluno("Pedro", 1, [5, 4, 8, 80])
+const aluno3 = new Aluno("Lucas", 60, [7.8])
+const aluno4 = new Aluno("Gabriel", 60, [9.8])
 
+//3º Criar objeto literal curso
+function Curso(nomeDoCursoParam, notaDeAprovacaoParam, faltasMaximasParam, listaDeEstudantesParam) {
+    this.nomeDoCurso = nomeDoCursoParam
+    this.notaDeAprovacao = notaDeAprovacaoParam
+    this.faltasMaximas = faltasMaximasParam
+    this.listaDeEstudantes = listaDeEstudantesParam
+
+    //4º Criar método que permite adicionar alunos à lista do curso
+    this.adicionarAluno = function (alunoNovo) {
+        return this.listaDeEstudantes.push(alunoNovo)
+    }
+    this.aprovarAluno = function (alunoAvaliado) {
+        let aprovado = false
+        if (alunoAvaliado.calcularMedia() >= this.notaDeAprovacao && alunoAvaliado.qtFaltas < this.faltasMaximas) {
+            //Caso o aluno tenha a media maior ou igual e faltas menor
+            aprovado = true
+        } else if (alunoAvaliado.calcularMedia() >= (this.notaDeAprovacao + (this.notaDeAprovacao * 0.1)) && alunoAvaliado.qtFaltas == this.faltasMaximas) {
+            //Caso o aluno tenha exatamente a quantidade de faltas maximas pra passar, e a media maior ou igual que a nota minima + 10%
+            aprovado = true
+        } 
+            return aprovado
+    }
+
+    this.alunosAprovados = function () {
+        let listaAlunosAprovados = []
+
+        for(let i=0;i<this.listaDeEstudantes.length;i++){
+            listaAlunosAprovados.push(this.aprovarAluno(this.listaDeEstudantes[i]))
+            //console.log(this.aprovarAluno(this.listaDeEstudantes[i]))
+        }
+
+            console.log(listaAlunosAprovados)
+
+    }
+
+
+}
+const FrontEnd = new Curso("Front-End", 7, 7, [aluno1, aluno2, aluno3])
+const ProgImperativa = new Curso("Programação Imperativa", 7, 2, [aluno1, aluno2, aluno3])
+
+//console.log para testar o AprovarAluno
+//console.log(FrontEnd.aprovarAluno(aluno3))
+
+
+//console.log para testar o alunosAprovados()
+ProgImperativa.alunosAprovados() 
